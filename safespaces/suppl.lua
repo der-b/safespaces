@@ -497,3 +497,30 @@ function suppl_run_menu(menu, path, errorf, verbose)
 		end
 	end
 end
+
+-- dumps all data of val
+function dump(val, depth) 
+	local depth = depth and depth or "";
+	if ("" == depth) then 
+		print("");
+	end
+
+	if ("table" == type(val)) then
+		for k in pairs(val) do
+			if ("table" == type(val[k])) then
+				print(depth .. k .. "[" .. type(val[k]) .. "]");
+				--if ("size" == k) then
+				--	dump(val[k], depth .. "  ");
+				--end
+			elseif ("function" == type(val[k])) then 
+				print(depth .. k .. "[" .. type(val[k]) .. "]");
+			else
+				print(depth .. k .. "[" .. type(val[k]) .. "] = " .. tostring(val[k]));
+			end
+		end
+	elseif ("function" ~= type(val)) then
+		print(val);
+	end
+	return nil;
+end
+

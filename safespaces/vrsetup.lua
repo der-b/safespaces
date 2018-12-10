@@ -516,6 +516,8 @@ end
 local function model_destroy(model)
 	local layer = model.layer;
 
+	model["tile"]["tiles"]["destroy"](model);
+
 -- reparent any children
 	local dst;
 	local dst_i;
@@ -558,30 +560,30 @@ local function model_destroy(model)
 
 -- clean up rendering resources, but defer on animation
 	local destroy = function(tmpmodel)
-	if (model.custom_shaders) then
-		for i,v in ipairs(model.custom_shaders) do
-			delete_shader(v);
+		if (model.custom_shaders) then
+			for i,v in ipairs(model.custom_shaders) do
+				delete_shader(v);
+			end
 		end
-	end
 
-	delete_image(model.vid);
-	if (valid_vid(model.external) and not model.external_protect) then
-		delete_image(model.external);
-	end
+		delete_image(model.vid);
+		if (valid_vid(model.external) and not model.external_protect) then
+			delete_image(model.external);
+		end
 
 -- custom shader? these are derived with shader_ugroup so delete is simple
-	if (model.shid) then
-		delete_shader(model.shid);
-	end
+		if (model.shid) then
+			delete_shader(model.shid);
+		end
 
-	if (valid_vid(model.ext_cp)) then
-		delete_image(model.ext_cp);
-	end
+		if (valid_vid(model.ext_cp)) then
+			delete_image(model.ext_cp);
+		end
 
 -- make it easier to detect dangling references
-	for k,_ in pairs(model) do
-		model[k] = nil;
-	end
+		for k,_ in pairs(model) do
+			model[k] = nil;
+		end
 	end
 
 -- animate fade out if desired, this has ugly subtle asynch races as the
@@ -608,6 +610,7 @@ end
 local function apply_connrole(layer, model, source)
 	local rv = false;
 
+
 	if (model.ext_name) then
 		delete_image(source);
 		model:set_connpoint(model.ext_name, model.ext_kind);
@@ -626,7 +629,7 @@ local function apply_connrole(layer, model, source)
 			rv = true;
 		end
 	end
-
+	
 	return rv;
 end
 
@@ -836,6 +839,36 @@ local function model_vswap(model, step)
 	end
 end
 
+local function model_rotateNotTiledLeft(model) 
+	model["tile"]["tiles"]["rotateNotTiledLeft"]();
+	model.layer:relayout();
+end
+
+local function model_rotateNotTiledRight(model) 
+	model["tile"]["tiles"]["rotateNotTiledRight"]();
+	model.layer:relayout();
+end
+
+local function model_swapNotTiled(model) 
+	model["tile"]["tiles"]["swapNotTiled"]();
+	model.layer:relayout();
+end
+
+local function model_swap_tiles(model, direction) 
+	if (nil ~= model["tile"]) then
+		if ("right" == direction) then
+			model["tile"]["tiles"]["toRight"]();
+		elseif ("left" == direction) then 
+			model["tile"]["tiles"]["toLeft"]();
+		elseif ("up" == direction) then
+			model["tile"]["tiles"]["toUp"]();
+		elseif ("down" == direction) then
+			model["tile"]["tiles"]["toDown"]();
+		end
+		model.layer:relayout();
+	end
+end
+
 local function model_get_displayhint_size(model)
 	local bw = model.ctx.near_layer_sz * (model.layer.index > 1 and
 		((model.layer.index-1) * model.ctx.layer_falloff) or 1);
@@ -873,6 +906,10 @@ local function build_model(layer, kind, name, ref)
 		scale = model_scale,
 		show = model_show,
 		vswap = model_vswap,
+		rotateNotTiledLeft = model_rotateNotTiledLeft,
+		rotateNotTiledRight = model_rotateNotTiledRight,
+		swap_tiles = model_swap_tiles,
+		swapNotTiled = model_swapNotTiled,
 		swap_parent = model_swapparent,
 		get_size = model_getsize,
 		get_scale = model_getscale,
@@ -1027,7 +1064,7 @@ local function model_eventhandler(wnd, model, source, status)
 	if (status.kind == "terminated") then
 -- need to check if the model is set to reset to last set /
 -- open connpoint or to die on termination
-		if (not apply_connrole(model.layer, model, source)) then
+		if (apply_connrole(model.layer, model, source)) then
 			model:destroy(EXIT_FAILURE, status.last_words);
 		end
 

@@ -342,6 +342,76 @@ local function model_settings_menu(wnd, layer, model)
 		end
 	},
 	{
+		name = "swapNotTiled",
+		label = "Swap Tile to the not Tiled",
+		kind = "value",
+		hint = "",
+		description = "Swap Tile to the not Tiled",
+		handler = function(ctx, val)
+			model:swapNotTiled();
+		end
+	},
+	{
+		name = "rotateNotTiledLeft",
+		label = "Rotated not Tiled to left",
+		kind = "value",
+		hint = "",
+		description = "Rotated not Tiled to left",
+		handler = function(ctx, val)
+			model:rotateNotTiledLeft();
+		end
+	},
+	{
+		name = "rotateNotTiledRight",
+		label = "Rotated not Tiled to right",
+		kind = "value",
+		hint = "",
+		description = "Rotated not Tiled to right",
+		handler = function(ctx, val)
+			model:rotateNotTiledRight();
+		end
+	},
+	{
+		name = "swap_tile_right",
+		label = "Swap tile to the right",
+		kind = "value",
+		hint = "",
+		description = "Swap Tile to the right",
+		handler = function(ctx, val)
+			model:swap_tiles("right");
+		end
+	},
+	{
+		name = "swap_tile_up",
+		label = "Swap tile to the up",
+		kind = "value",
+		hint = "",
+		description = "Swap Tile to the up",
+		handler = function(ctx, val)
+			model:swap_tiles("up");
+		end
+	},
+	{
+		name = "swap_tile_down",
+		label = "Swap tile to the down",
+		kind = "value",
+		hint = "",
+		description = "Swap Tile to the down",
+		handler = function(ctx, val)
+			model:swap_tiles("down");
+		end
+	},
+	{
+		name = "swap_tile_left",
+		label = "Swap tile to the left",
+		kind = "value",
+		hint = "",
+		description = "Swap Tile to the left",
+		handler = function(ctx, val)
+			model:swap_tiles("left");
+		end
+	},
+	{
 		name = "destroy",
 		label = "Destroy",
 		kind = "action",

@@ -17,24 +17,24 @@ return {
 
 -- an interactive foreground layer with a transparent terminal
 "layers/add=fg",
-"layers/layer_fg/settings/active_scale=1",
+"layers/layer_fg/settings/active_scale=3",
 "layers/layer_fg/settings/inactive_scale=1",
-"layers/layer_fg/settings/depth=20",
-"layers/layer_fg/settings/radius=16",
+"layers/layer_fg/settings/depth=3.5",
+"layers/layer_fg/settings/radius=10.0",
 "layers/layer_fg/settings/spacing=0.0",
-"layers/layer_fg/settings/vspacing=0.0",
+"layers/layer_fg/settings/vspacing=0.1",
 "layers/layer_fg/terminal=bgalpha=128",
 
 -- a hidden layer with the video screen
---"layers/add=mid",
---"layers/layer_mid/settings/radius=12.0",
---"layers/layer_mid/settings/depth=2.0",
---"layers/layer_mid/settings/spacing=1.0",
---"layers/layer_mid/settings/active_scale=1",
---"layers/layer_mid/settings/inactive_scale=1",
---"layers/layer_mid/add_model/rectangle=screen",
---"layers/layer_mid/models/screen/connpoint/reveal_focus=moviescreen",
---"layers/layer_mid/models/screen/scale=5",
+"layers/add=mid",
+"layers/layer_mid/settings/radius=12.0",
+"layers/layer_mid/settings/depth=2.0",
+"layers/layer_mid/settings/spacing=1.0",
+"layers/layer_mid/settings/active_scale=1",
+"layers/layer_mid/settings/inactive_scale=1",
+"layers/layer_mid/add_model/rectangle=screen",
+"layers/layer_mid/models/screen/connpoint/reveal_focus=moviescreen",
+"layers/layer_mid/models/screen/scale=5",
 
 -- and set the right focus
 "layers/layer_fg/focus"
